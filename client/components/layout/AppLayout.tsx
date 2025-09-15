@@ -44,25 +44,38 @@ export default function AppLayout({ children }: PropsWithChildren) {
     } catch {}
   }, [currency]);
 
-  // Fetch exchange rates
+  // Fetch exchange rates (switch to ER API)
   const [rates, setRates] = useState<Record<string, number> | null>(null);
   const fetchRates = async () => {
     try {
-      const symbols = ["USD", "TRY", "GBP", "RUB"].join(",");
-      const base = "EUR";
-      const res = await fetch(`https://api.exchangerate.host/latest?base=${base}&symbols=${symbols}`);
+      const res = await fetch("https://open.er-api.com/v6/latest/EUR");
       if (!res.ok) return;
       const data = await res.json();
+      // data.rates is an object of currency: value
       setRates(data.rates || null);
     } catch (e) {
       // ignore
     }
   };
 
+  // auto-collapse on small screens and refresh rates periodically
   useEffect(() => {
     fetchRates();
     const id = setInterval(fetchRates, 1000 * 60 * 5); // refresh every 5 minutes
-    return () => clearInterval(id);
+
+    function onResize() {
+      try {
+        const isSmall = window.innerWidth < 768;
+        if (isSmall) setCollapsed(true);
+      } catch {}
+    }
+    window.addEventListener("resize", onResize);
+    onResize();
+
+    return () => {
+      clearInterval(id);
+      window.removeEventListener("resize", onResize);
+    };
   }, []);
 
   return (
