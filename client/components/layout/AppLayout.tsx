@@ -53,42 +53,36 @@ export default function AppLayout({ children }: PropsWithChildren) {
 
   const fetchRates = async () => {
     try {
-      const symbols = ["USD","TRY","GBP","RUB"].join(",");
-      const base = "EUR";
-      const res = await fetch(`https://api.exchangerate.host/latest?base=${base}&symbols=${symbols}`);
+      const res = await fetch('/api/exchange');
       if (!res.ok) return;
       const data = await res.json();
       setRates(data.rates || null);
-      if (data && data.date) setLastUpdated(data.date);
+      setHistory(data.history || null);
+      setLastUpdated(data.date || null);
     } catch (e) {
       // ignore
     }
   };
 
-  const fetchHistory = async () => {
-    try {
-      const end = new Date();
-      const start = new Date();
-      start.setDate(end.getDate() - 7);
-      const s = start.toISOString().slice(0,10);
-      const e = end.toISOString().slice(0,10);
-      const symbols = ["USD","TRY","GBP","RUB"].join(",");
-      const res = await fetch(`https://api.exchangerate.host/timeseries?start_date=${s}&end_date=${e}&base=EUR&symbols=${symbols}`);
-      if (!res.ok) return;
-      const data = await res.json();
-      const obj: Record<string, number[]> = {};
-      Object.keys(data.rates || {}).forEach((date:string) => {
-        const day = data.rates[date];
-        Object.entries(day).forEach(([k,v]) => {
-          if (!obj[k]) obj[k] = [];
-          obj[k].push(Number(v));
-        });
-      });
-      setHistory(obj);
-    } catch (e) {
-      // ignore
+  // auto-collapse on small screens and refresh rates periodically
+  useEffect(() => {
+    fetchRates();
+    const id = setInterval(fetchRates, 1000 * 60 * 5); // refresh every 5 minutes
+
+    function onResize() {
+      try {
+        const isSmall = window.innerWidth < 768;
+        if (isSmall) setCollapsed(true);
+      } catch {}
     }
-  };
+    window.addEventListener("resize", onResize);
+    onResize();
+
+    return () => {
+      clearInterval(id);
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
 
   // auto-collapse on small screens and refresh rates periodically
   useEffect(() => {
