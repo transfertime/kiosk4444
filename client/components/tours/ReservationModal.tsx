@@ -323,7 +323,9 @@ export default function ReservationModal({
                 onOpenChange={setPaymentOptionsOpen}
                 onSelect={(m) => {
                   setMethod(m);
-                  setStep("payment");
+                  setPaymentOptionsOpen(false);
+                  if (m === "card") setCardModalOpen(true);
+                  else setPreModalOpen(true);
                 }}
               />
             </div>
