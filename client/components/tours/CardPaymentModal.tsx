@@ -116,6 +116,13 @@ export default function CardPaymentModal({ open, onOpenChange, tour, amount, ord
 
           {error && <div className="text-sm text-red-600 mb-2">{error}</div>}
 
+          {success && (
+            <div className="flex items-center gap-3 bg-green-50 border border-green-200 text-green-700 px-4 py-2 rounded-md mb-3">
+              <Check className="h-5 w-5" />
+              <div>Ödeme başarılı. Rezervasyon hazırlanıyor...</div>
+            </div>
+          )}
+
           <div className="flex justify-end mt-4">
             <button
               onClick={onPay}
