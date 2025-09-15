@@ -1,7 +1,35 @@
 import { RequestHandler } from "express";
 
+import { RequestHandler } from "express";
+
 const CACHE_TTL = 1000 * 60 * 5; // 5 minutes
 let cache: { ts: number; data: any } | null = null;
+
+async function fetchTCMB() {
+  try {
+    const res = await fetch("https://www.tcmb.gov.tr/kurlar/today.xml");
+    if (!res.ok) return null;
+    const txt = await res.text();
+    const codes = ["USD","EUR","GBP","RUB"];
+    const map: Record<string, number | null> = {};
+    for (const c of codes) {
+      const re = new RegExp(`<Currency[^>]*Kod=\\"${c}\\"[\\s\\S]*?<ForexSelling>(.*?)<\\/ForexSelling>`, "i");
+      const m = txt.match(re);
+      if (m && m[1]) {
+        const val = parseFloat(m[1].replace(/,/g, '.'));
+        map[c] = isNaN(val) ? null : val;
+      } else {
+        map[c] = null;
+      }
+    }
+    // date attribute on <Tarih="...">
+    const dateMatch = txt.match(/<Tarih=("|')(.*?)\1/);
+    const date = dateMatch ? dateMatch[2] : null;
+    return { map, date };
+  } catch (e) {
+    return null;
+  }
+}
 
 export const exchangeHandler: RequestHandler = async (req, res) => {
   try {
@@ -13,6 +41,10 @@ export const exchangeHandler: RequestHandler = async (req, res) => {
     const symbols = ["USD","TRY","GBP","RUB"].join(",");
     const base = "EUR";
 
+    // TCMB latest TRY rates
+    const tcmb = await fetchTCMB();
+
+    // fallback/latest from exchangerate.host for EUR base and timeseries
     const latestRes = await fetch(`https://api.exchangerate.host/latest?base=${base}&symbols=${symbols}`);
     if (!latestRes.ok) {
       return res.status(502).json({ error: "Failed to fetch latest rates" });
@@ -25,11 +57,10 @@ export const exchangeHandler: RequestHandler = async (req, res) => {
     start.setDate(end.getDate() - 6);
     const s = start.toISOString().slice(0,10);
     const e = end.toISOString().slice(0,10);
-    const tsRes = await fetch(`https://api.exchangerate.host/timeseries?start_date=${s}&end_date=${e}&base=${base}&symbols=${symbols}`);
+    const tsRes = await fetch(`https://api.exchangerate.host/timeseries?start_date=${s}&end_date=${e}&base=EUR&symbols=${symbols}`);
     let history: any = null;
     if (tsRes.ok) {
       const ts = await tsRes.json();
-      // organize into arrays per currency in chronological order
       const obj: Record<string, number[]> = {};
       const dates = Object.keys(ts.rates || {}).sort();
       dates.forEach((date: string) => {
@@ -42,7 +73,14 @@ export const exchangeHandler: RequestHandler = async (req, res) => {
       history = obj;
     }
 
-    const payload = { rates: latest.rates || null, history, date: latest.date || new Date().toISOString().slice(0,10) };
+    const tcmbSelling: Record<string, number | null> = {};
+    if (tcmb && tcmb.map) {
+      for (const k of ["USD","EUR","GBP","RUB"]) {
+        tcmbSelling[k] = tcmb.map[k] ?? null;
+      }
+    }
+
+    const payload = { rates: latest.rates || null, history, date: latest.date || new Date().toISOString().slice(0,10), tcmb: tcmbSelling, tcmb_date: tcmb?.date || null };
     cache = { ts: now, data: payload };
     return res.json(payload);
   } catch (e) {
