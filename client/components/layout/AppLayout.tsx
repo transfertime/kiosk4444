@@ -61,6 +61,8 @@ export default function AppLayout({ children }: PropsWithChildren) {
       setRates(data.rates || null);
       setHistory(data.history || null);
       setLastUpdated(data.date || null);
+      setTcmb(data.tcmb || null);
+      setTcmbDate(data.tcmb_date || null);
     } catch (e) {
       // ignore
     }
