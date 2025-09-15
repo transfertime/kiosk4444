@@ -50,6 +50,8 @@ export default function AppLayout({ children }: PropsWithChildren) {
   const [showRates, setShowRates] = useState(false);
   const [history, setHistory] = useState<Record<string, number[]> | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+  const [tcmb, setTcmb] = useState<Record<string, number | null> | null>(null);
+  const [tcmbDate, setTcmbDate] = useState<string | null>(null);
 
   const fetchRates = async () => {
     try {
