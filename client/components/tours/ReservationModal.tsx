@@ -624,6 +624,25 @@ export default function ReservationModal({
         reservationCode={reservationCode || ""}
         totalPrice={totalPrice}
       />
+
+      <CardPaymentModal
+        open={cardModalOpen}
+        onOpenChange={setCardModalOpen}
+        tour={tour}
+        amount={totalPrice}
+        orderId={reservationCode || genCode()}
+      />
+
+      <PreReservationModal
+        open={preModalOpen}
+        onOpenChange={setPreModalOpen}
+        onConfirm={() => {
+          const code = genCode();
+          setReservationCode(code);
+          setVoucherOpen(true);
+          setStep("success");
+        }}
+      />
     </DialogContent>
   );
 }
