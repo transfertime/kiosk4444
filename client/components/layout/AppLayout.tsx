@@ -64,25 +64,6 @@ export default function AppLayout({ children }: PropsWithChildren) {
     }
   };
 
-  // auto-collapse on small screens and refresh rates periodically
-  useEffect(() => {
-    fetchRates();
-    const id = setInterval(fetchRates, 1000 * 60 * 5); // refresh every 5 minutes
-
-    function onResize() {
-      try {
-        const isSmall = window.innerWidth < 768;
-        if (isSmall) setCollapsed(true);
-      } catch {}
-    }
-    window.addEventListener("resize", onResize);
-    onResize();
-
-    return () => {
-      clearInterval(id);
-      window.removeEventListener("resize", onResize);
-    };
-  }, []);
 
   // auto-collapse on small screens and refresh rates periodically
   useEffect(() => {
