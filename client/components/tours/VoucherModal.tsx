@@ -6,7 +6,8 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Printer, Send } from "lucide-react";
+import { Printer, Send, CheckCircle2 } from "lucide-react";
+import { useRef } from "react";
 import type { Tour } from "./data";
 
 function formatEUR(n: number) {
