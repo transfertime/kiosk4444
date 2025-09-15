@@ -47,12 +47,12 @@ export function Sidebar({
         className,
       )}
     >
-      <div className={cn("px-4 pt-6 pb-4 border-b border-white/20 flex flex-col items-start", collapsed ? "items-center" : "") }>
-        <div className={cn("flex items-center gap-2", collapsed ? "flex-col" : "flex-row")}>
-          <div className={cn("h-9 w-9 rounded-lg bg-brand text-white grid place-items-center font-bold", collapsed ? "" : "") }>
+      <div className={cn("px-4 pt-6 pb-4 border-b border-white/20 flex flex-col items-start", isExpanded ? "items-start" : "items-center") }>
+        <div className={cn("flex items-center gap-2", isExpanded ? "flex-row" : "flex-col")}>
+          <div className={cn("h-9 w-9 rounded-lg bg-brand text-white grid place-items-center font-bold") }>
             on
           </div>
-          {!collapsed && (
+          {isExpanded && (
             <div>
               <p className="text-sm tracking-widest uppercase text-slate-500">Antalya</p>
               <p className="font-semibold">On Hotel</p>
