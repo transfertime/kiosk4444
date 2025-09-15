@@ -38,6 +38,7 @@ export default function CardPaymentModal({ open, onOpenChange, tour, amount, ord
   const [cvv, setCvv] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [success, setSuccess] = React.useState(false);
 
   function validate() {
     setError(null);
@@ -47,10 +48,10 @@ export default function CardPaymentModal({ open, onOpenChange, tour, amount, ord
     if (!luhnCheck(digits)) return "Geçersiz kart numarası.";
     const m = Number(expMonth);
     let y = Number(expYear);
-    if (!m || m < 1 || m > 12) return "Geçersiz son kullanma ayı.";
     if (expYear.length === 2) {
       y = 2000 + y;
     }
+    if (!m || m < 1 || m > 12) return "Geçersiz son kullanma ayı.";
     if (!y || y < 2000) return "Geçersiz son kullanma yılı.";
     const now = new Date();
     const exp = new Date(y, m - 1, 1);
@@ -58,7 +59,7 @@ export default function CardPaymentModal({ open, onOpenChange, tour, amount, ord
     exp.setMonth(exp.getMonth() + 1);
     if (exp <= now) return "Kart süresi dolmuş.";
     const cvvDigits = cvv.replace(/\D/g, "");
-    const cvvLen = digits.length === 15 ? 4 : 3;
+    const cvvLen = cardNumber.replace(/\D/g, "").length === 15 ? 4 : 3;
     if (cvvDigits.length !== cvvLen) return `CVV ${cvvLen} haneli olmalıdır.`;
     return null;
   }
@@ -72,9 +73,13 @@ export default function CardPaymentModal({ open, onOpenChange, tour, amount, ord
     try {
       setLoading(true);
       // Simulate payment gateway flow (mock)
-      await new Promise((r) => setTimeout(r, 1200));
+      await new Promise((r) => setTimeout(r, 900));
+      // show success visual briefly
+      setSuccess(true);
+      await new Promise((r) => setTimeout(r, 700));
       // Success
       if (onSuccess) onSuccess(orderId);
+      setSuccess(false);
       onOpenChange(false);
     } catch (e) {
       setError("Ödeme sırasında hata oluştu.");
