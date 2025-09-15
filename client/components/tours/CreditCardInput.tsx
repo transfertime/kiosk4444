@@ -197,7 +197,7 @@ export default function CreditCardInput({
           <input
             inputMode="numeric"
             placeholder="YYYY"
-            className={`w-full rounded-md px-3 py-2 text-sm border ${fieldClass(expYear ? expValid : undefined)}`}
+            className={`w-full rounded-md px-3 py-2 text-sm border transition-colors duration-200 ease-in-out ${fieldClass(expYear ? expValid : undefined)}`}
             value={expYear}
             onChange={(e) => onChange({ expYear: e.target.value.replace(/[^0-9]/g, "") })}
           />
