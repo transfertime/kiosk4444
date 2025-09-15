@@ -25,9 +25,11 @@ const navItems = [
 export function Sidebar({
   className,
   onNavigate,
+  collapsed,
 }: {
   className?: string;
   onNavigate?: () => void;
+  collapsed?: boolean;
 }) {
   return (
     <aside
