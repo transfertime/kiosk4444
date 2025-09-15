@@ -1,5 +1,10 @@
 import React from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { ShieldCheck, CreditCard } from "lucide-react";
 
 export type PaymentOptionsModalProps = {
@@ -8,7 +13,11 @@ export type PaymentOptionsModalProps = {
   onSelect: (method: "card" | "pre") => void;
 };
 
-export default function PaymentOptionsModal({ open, onOpenChange, onSelect }: PaymentOptionsModalProps) {
+export default function PaymentOptionsModal({
+  open,
+  onOpenChange,
+  onSelect,
+}: PaymentOptionsModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg">
@@ -29,7 +38,9 @@ export default function PaymentOptionsModal({ open, onOpenChange, onSelect }: Pa
             </div>
             <div className="text-left">
               <div className="font-medium">Kredi Kartı ile Ödeme</div>
-              <div className="text-xs text-slate-600">Hemen kredi kartı ile ödeme yapın.</div>
+              <div className="text-xs text-slate-600">
+                Hemen kredi kartı ile ödeme yapın.
+              </div>
             </div>
           </button>
 
@@ -45,7 +56,9 @@ export default function PaymentOptionsModal({ open, onOpenChange, onSelect }: Pa
             </div>
             <div className="text-left">
               <div className="font-medium">Ön Rezervasyon</div>
-              <div className="text-xs text-slate-600">Sözleşme ve KVKK onayından sonra ön rezervasyon oluşturun.</div>
+              <div className="text-xs text-slate-600">
+                Sözleşme ve KVKK onayından sonra ön rezervasyon oluşturun.
+              </div>
             </div>
           </button>
         </div>

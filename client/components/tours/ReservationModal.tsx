@@ -390,10 +390,14 @@ export default function ReservationModal({
                   expYear={expYear}
                   cvv={cvv}
                   onChange={(fields) => {
-                    if (fields.cardName !== undefined) setCardName(fields.cardName);
-                    if (fields.cardNumber !== undefined) setCardNumber(fields.cardNumber);
-                    if (fields.expMonth !== undefined) setExpMonth(fields.expMonth);
-                    if (fields.expYear !== undefined) setExpYear(fields.expYear);
+                    if (fields.cardName !== undefined)
+                      setCardName(fields.cardName);
+                    if (fields.cardNumber !== undefined)
+                      setCardNumber(fields.cardNumber);
+                    if (fields.expMonth !== undefined)
+                      setExpMonth(fields.expMonth);
+                    if (fields.expYear !== undefined)
+                      setExpYear(fields.expYear);
                     if (fields.cvv !== undefined) setCvv(fields.cvv);
                   }}
                 />

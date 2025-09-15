@@ -1,6 +1,11 @@
 import React from "react";
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Check } from "lucide-react";
 import CreditCardInput from "./CreditCardInput";
 import type { Tour } from "./data";
@@ -30,7 +35,14 @@ function luhnCheck(num: string) {
   return sum % 10 === 0;
 }
 
-export default function CardPaymentModal({ open, onOpenChange, tour, amount, orderId, onSuccess }: CardPaymentModalProps) {
+export default function CardPaymentModal({
+  open,
+  onOpenChange,
+  tour,
+  amount,
+  orderId,
+  onSuccess,
+}: CardPaymentModalProps) {
   const [cardName, setCardName] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [expMonth, setExpMonth] = useState("");
@@ -97,7 +109,14 @@ export default function CardPaymentModal({ open, onOpenChange, tour, amount, ord
 
         <div className="mt-4">
           <div className="text-sm text-slate-600 mb-2">Tur: {tour.title}</div>
-          <div className="text-sm text-slate-600 mb-4">Tutar: {new Intl.NumberFormat("tr-TR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(amount)}</div>
+          <div className="text-sm text-slate-600 mb-4">
+            Tutar:{" "}
+            {new Intl.NumberFormat("tr-TR", {
+              style: "currency",
+              currency: "EUR",
+              maximumFractionDigits: 0,
+            }).format(amount)}
+          </div>
 
           <CreditCardInput
             cardName={cardName}
@@ -107,7 +126,8 @@ export default function CardPaymentModal({ open, onOpenChange, tour, amount, ord
             cvv={cvv}
             onChange={(fields) => {
               if (fields.cardName !== undefined) setCardName(fields.cardName);
-              if (fields.cardNumber !== undefined) setCardNumber(fields.cardNumber);
+              if (fields.cardNumber !== undefined)
+                setCardNumber(fields.cardNumber);
               if (fields.expMonth !== undefined) setExpMonth(fields.expMonth);
               if (fields.expYear !== undefined) setExpYear(fields.expYear);
               if (fields.cvv !== undefined) setCvv(fields.cvv);

@@ -92,13 +92,19 @@ export default function VoucherModal(props: VoucherModalProps) {
                 <CheckCircle2 className="h-6 w-6" />
               </div>
               <div>
-                <DialogTitle className="!mb-0">Rezervasyon Onaylandı</DialogTitle>
-                <div className="text-sm text-slate-600">Rezervasyon özeti ve işlemler</div>
+                <DialogTitle className="!mb-0">
+                  Rezervasyon Onaylandı
+                </DialogTitle>
+                <div className="text-sm text-slate-600">
+                  Rezervasyon özeti ve işlemler
+                </div>
               </div>
             </div>
             <div className="text-right">
               <div className="text-xs text-slate-500">Rezervasyon Kodu</div>
-              <div className="font-mono font-semibold text-lg">{props.reservationCode}</div>
+              <div className="font-mono font-semibold text-lg">
+                {props.reservationCode}
+              </div>
             </div>
           </div>
         </DialogHeader>

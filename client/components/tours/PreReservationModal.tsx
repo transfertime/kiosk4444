@@ -1,5 +1,10 @@
 import React from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 
 export type PreReservationModalProps = {
@@ -8,7 +13,11 @@ export type PreReservationModalProps = {
   onConfirm: () => void;
 };
 
-export default function PreReservationModal({ open, onOpenChange, onConfirm }: PreReservationModalProps) {
+export default function PreReservationModal({
+  open,
+  onOpenChange,
+  onConfirm,
+}: PreReservationModalProps) {
   const [pre1, setPre1] = React.useState(false);
   const [pre2, setPre2] = React.useState(false);
   const [pre3, setPre3] = React.useState(false);
@@ -24,18 +33,36 @@ export default function PreReservationModal({ open, onOpenChange, onConfirm }: P
 
         <div className="mt-4 space-y-3 text-sm">
           <label className="flex items-start gap-2">
-            <Checkbox checked={pre1} onCheckedChange={(v) => setPre1(Boolean(v))} />
-            <span>Hizmet Sözleşmesi ve İptal/Değişiklik Şartları'nı okudum, kabul ediyorum.</span>
+            <Checkbox
+              checked={pre1}
+              onCheckedChange={(v) => setPre1(Boolean(v))}
+            />
+            <span>
+              Hizmet Sözleşmesi ve İptal/Değişiklik Şartları'nı okudum, kabul
+              ediyorum.
+            </span>
           </label>
 
           <label className="flex items-start gap-2">
-            <Checkbox checked={pre2} onCheckedChange={(v) => setPre2(Boolean(v))} />
-            <span>Ticari Elektronik İleti Aydınlatma Metni'ni okudum, onay veriyorum.</span>
+            <Checkbox
+              checked={pre2}
+              onCheckedChange={(v) => setPre2(Boolean(v))}
+            />
+            <span>
+              Ticari Elektronik İleti Aydınlatma Metni'ni okudum, onay
+              veriyorum.
+            </span>
           </label>
 
           <label className="flex items-start gap-2">
-            <Checkbox checked={pre3} onCheckedChange={(v) => setPre3(Boolean(v))} />
-            <span>KVKK Aydınlatma Metni'ni okudum ve kişisel verilerimin işlenmesini kabul ediyorum.</span>
+            <Checkbox
+              checked={pre3}
+              onCheckedChange={(v) => setPre3(Boolean(v))}
+            />
+            <span>
+              KVKK Aydınlatma Metni'ni okudum ve kişisel verilerimin işlenmesini
+              kabul ediyorum.
+            </span>
           </label>
 
           <div className="flex justify-end pt-2">

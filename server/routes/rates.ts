@@ -9,10 +9,13 @@ async function fetchTCMB() {
     const codes = ["USD", "EUR", "GBP", "RUB"];
     const map = {};
     for (const c of codes) {
-      const re = new RegExp(`<Currency[^>]*Kod=\\"${c}\\"[\\s\\S]*?<ForexSelling>(.*?)<\\/ForexSelling>`, "i");
+      const re = new RegExp(
+        `<Currency[^>]*Kod=\\"${c}\\"[\\s\\S]*?<ForexSelling>(.*?)<\\/ForexSelling>`,
+        "i",
+      );
       const m = txt.match(re);
       if (m && m[1]) {
-        const val = parseFloat(m[1].replace(/,/g, '.'));
+        const val = parseFloat(m[1].replace(/,/g, "."));
         map[c] = isNaN(val) ? null : val;
       } else {
         map[c] = null;
@@ -38,7 +41,9 @@ export const exchangeHandler = async (req, res) => {
 
     const tcmb = await fetchTCMB();
 
-    const latestRes = await fetch(`https://api.exchangerate.host/latest?base=${base}&symbols=${symbols}`);
+    const latestRes = await fetch(
+      `https://api.exchangerate.host/latest?base=${base}&symbols=${symbols}`,
+    );
     if (!latestRes.ok) {
       return res.status(502).json({ error: "Failed to fetch latest rates" });
     }
@@ -49,7 +54,9 @@ export const exchangeHandler = async (req, res) => {
     start.setDate(end.getDate() - 6);
     const s = start.toISOString().slice(0, 10);
     const e = end.toISOString().slice(0, 10);
-    const tsRes = await fetch(`https://api.exchangerate.host/timeseries?start_date=${s}&end_date=${e}&base=EUR&symbols=${symbols}`);
+    const tsRes = await fetch(
+      `https://api.exchangerate.host/timeseries?start_date=${s}&end_date=${e}&base=EUR&symbols=${symbols}`,
+    );
     let history = null;
     if (tsRes.ok) {
       const ts = await tsRes.json();
@@ -71,7 +78,7 @@ export const exchangeHandler = async (req, res) => {
         tcmbSelling[k] = tcmb.map[k];
       } else if (latest && latest.rates) {
         const eurToK = Number(latest.rates[k]) || null;
-        const eurToTRY = Number(latest.rates['TRY']) || null;
+        const eurToTRY = Number(latest.rates["TRY"]) || null;
         if (eurToK && eurToTRY) {
           tcmbSelling[k] = eurToTRY / eurToK;
         } else {
@@ -82,7 +89,13 @@ export const exchangeHandler = async (req, res) => {
       }
     }
 
-    const payload = { rates: latest.rates || null, history, date: latest.date || new Date().toISOString().slice(0, 10), tcmb: tcmbSelling, tcmb_date: tcmb?.date || null };
+    const payload = {
+      rates: latest.rates || null,
+      history,
+      date: latest.date || new Date().toISOString().slice(0, 10),
+      tcmb: tcmbSelling,
+      tcmb_date: tcmb?.date || null,
+    };
     cache = { ts: now, data: payload };
     return res.json(payload);
   } catch (e) {

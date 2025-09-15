@@ -45,7 +45,12 @@ function BrandLogo({ brand }: { brand: string }) {
   switch (brand) {
     case "visa":
       return (
-        <svg className={common} viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+        <svg
+          className={common}
+          viewBox="0 0 36 24"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden
+        >
           <rect width="36" height="24" rx="4" fill="#1a1f71" />
           <path d="M8 16l2-8h2l-2 8H8z" fill="#fff" opacity="0.9" />
           <path d="M14 8h2l1 8h-2l-1-8z" fill="#fff" opacity="0.9" />
@@ -53,7 +58,12 @@ function BrandLogo({ brand }: { brand: string }) {
       );
     case "mastercard":
       return (
-        <svg className={common} viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+        <svg
+          className={common}
+          viewBox="0 0 36 24"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden
+        >
           <rect width="36" height="24" rx="4" fill="#fff" />
           <circle cx="14" cy="12" r="6" fill="#eb001b" />
           <circle cx="22" cy="12" r="6" fill="#f79f1b" />
@@ -61,16 +71,30 @@ function BrandLogo({ brand }: { brand: string }) {
       );
     case "amex":
       return (
-        <svg className={common} viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+        <svg
+          className={common}
+          viewBox="0 0 36 24"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden
+        >
           <rect width="36" height="24" rx="4" fill="#2e77bb" />
-          <text x="6" y="16" fill="#fff" fontSize="9" fontWeight="700">AMEX</text>
+          <text x="6" y="16" fill="#fff" fontSize="9" fontWeight="700">
+            AMEX
+          </text>
         </svg>
       );
     case "discover":
       return (
-        <svg className={common} viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+        <svg
+          className={common}
+          viewBox="0 0 36 24"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden
+        >
           <rect width="36" height="24" rx="4" fill="#fff" />
-          <text x="6" y="15" fill="#ff6f00" fontSize="8" fontWeight="700">discover</text>
+          <text x="6" y="15" fill="#ff6f00" fontSize="8" fontWeight="700">
+            discover
+          </text>
         </svg>
       );
     default:
@@ -89,7 +113,10 @@ export default function CreditCardInput({
   const brand = useMemo(() => detectBrand(cardNumber), [cardNumber]);
 
   const numberDigits = cardNumber.replace(/\D/g, "");
-  const numberValid = useMemo(() => luhnCheck(numberDigits) && numberDigits.length >= 13, [numberDigits]);
+  const numberValid = useMemo(
+    () => luhnCheck(numberDigits) && numberDigits.length >= 13,
+    [numberDigits],
+  );
 
   const month = Number(expMonth || 0);
   const year = Number(expYear?.length === 2 ? `20${expYear}` : expYear || 0);
@@ -125,14 +152,18 @@ export default function CreditCardInput({
           </div>
           <div className="text-right">
             <div className="text-xs opacity-75">Son Kullanma</div>
-            <div className="font-medium">{(expMonth || "MM") + "/" + (expYear ? expYear.slice(-2) : "YY")}</div>
+            <div className="font-medium">
+              {(expMonth || "MM") + "/" + (expYear ? expYear.slice(-2) : "YY")}
+            </div>
           </div>
         </div>
         <div className="text-lg tracking-widest font-mono flex items-center justify-between">
           <div>{formatCardNumber(cardNumber) || "•••• •••• •••• ••••"}</div>
           <div className="flex items-center gap-2">
             <BrandLogo brand={brand} />
-            <div className="text-xs uppercase tracking-wider opacity-90">{brand === "unknown" ? "" : brand}</div>
+            <div className="text-xs uppercase tracking-wider opacity-90">
+              {brand === "unknown" ? "" : brand}
+            </div>
             {allValid ? (
               <div className="flex items-center gap-1 bg-white/10 rounded-full p-1 transition-transform transform scale-100">
                 <Check className="h-5 w-5 text-green-300 animate-pulse" />
@@ -148,46 +179,62 @@ export default function CreditCardInput({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div className="md:col-span-2">
-          <label className="block text-xs text-slate-600 mb-1">Kart ��zerindeki İsim</label>
+          <label className="block text-xs text-slate-600 mb-1">
+            Kart ��zerindeki İsim
+          </label>
           <input
             className={`w-full rounded-md px-3 py-2 text-sm border transition-colors duration-200 ease-in-out ${fieldClass(nameValid)}`}
             value={cardName}
             onChange={(e) => onChange({ cardName: e.target.value })}
           />
           {!nameValid && cardName.length > 0 && (
-            <div className="text-xs text-red-600 mt-1 flex items-center gap-1"><X className="h-3 w-3" /> Lütfen kart üzerindeki ismi girin.</div>
+            <div className="text-xs text-red-600 mt-1 flex items-center gap-1">
+              <X className="h-3 w-3" /> Lütfen kart üzerindeki ismi girin.
+            </div>
           )}
         </div>
 
         <div className="md:col-span-2">
-          <label className="block text-xs text-slate-600 mb-1">Kart Numarası</label>
+          <label className="block text-xs text-slate-600 mb-1">
+            Kart Numarası
+          </label>
           <input
             inputMode="numeric"
             maxLength={23}
             placeholder="1111 2222 3333 4444"
             className={`w-full rounded-md px-3 py-2 text-sm border transition-colors duration-200 ease-in-out ${fieldClass(numberDigits.length === 0 ? undefined : numberValid)}`}
             value={cardNumber}
-            onChange={(e) => onChange({ cardNumber: e.target.value.replace(/[^0-9 ]/g, "") })}
+            onChange={(e) =>
+              onChange({ cardNumber: e.target.value.replace(/[^0-9 ]/g, "") })
+            }
           />
           {numberDigits.length > 0 && (
             <div className="mt-1 text-xs flex items-center gap-2">
               {numberValid ? (
-                <div className="text-green-600 flex items-center gap-1"><Check className="h-3 w-3" /> Kart numarası geçerli</div>
+                <div className="text-green-600 flex items-center gap-1">
+                  <Check className="h-3 w-3" /> Kart numarası geçerli
+                </div>
               ) : (
-                <div className="text-red-600 flex items-center gap-1"><X className="h-3 w-3" /> Geçersiz kart numarası</div>
+                <div className="text-red-600 flex items-center gap-1">
+                  <X className="h-3 w-3" /> Geçersiz kart numarası
+                </div>
               )}
             </div>
           )}
         </div>
 
         <div>
-          <label className="block text-xs text-slate-600 mb-1">Son Kullanma Ay</label>
+          <label className="block text-xs text-slate-600 mb-1">
+            Son Kullanma Ay
+          </label>
           <input
             inputMode="numeric"
             placeholder="MM"
             className={`w-full rounded-md px-3 py-2 text-sm border transition-colors duration-200 ease-in-out ${fieldClass(expMonth ? expValid : undefined)}`}
             value={expMonth}
-            onChange={(e) => onChange({ expMonth: e.target.value.replace(/[^0-9]/g, "") })}
+            onChange={(e) =>
+              onChange({ expMonth: e.target.value.replace(/[^0-9]/g, "") })
+            }
           />
         </div>
 
@@ -198,7 +245,9 @@ export default function CreditCardInput({
             placeholder="YYYY"
             className={`w-full rounded-md px-3 py-2 text-sm border transition-colors duration-200 ease-in-out ${fieldClass(expYear ? expValid : undefined)}`}
             value={expYear}
-            onChange={(e) => onChange({ expYear: e.target.value.replace(/[^0-9]/g, "") })}
+            onChange={(e) =>
+              onChange({ expYear: e.target.value.replace(/[^0-9]/g, "") })
+            }
           />
         </div>
 
@@ -209,9 +258,13 @@ export default function CreditCardInput({
             maxLength={4}
             className={`w-full rounded-md px-3 py-2 text-sm border transition-colors duration-200 ease-in-out ${fieldClass(cvv ? cvvValid : undefined)}`}
             value={cvv}
-            onChange={(e) => onChange({ cvv: e.target.value.replace(/[^0-9]/g, "") })}
+            onChange={(e) =>
+              onChange({ cvv: e.target.value.replace(/[^0-9]/g, "") })
+            }
           />
-          <div className="text-xs text-slate-500 mt-1">CVV uzunluğu: {requiredCvvLen} hane</div>
+          <div className="text-xs text-slate-500 mt-1">
+            CVV uzunluğu: {requiredCvvLen} hane
+          </div>
         </div>
       </div>
     </div>

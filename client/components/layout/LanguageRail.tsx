@@ -29,7 +29,11 @@ export function LanguageRail() {
                 : "bg-white/70 dark:bg-white/10"
             }`}
           >
-            <img src={`https://flagcdn.com/w40/${l.country}.png`} alt={l.label} className="w-6 h-6 rounded-full object-cover" />
+            <img
+              src={`https://flagcdn.com/w40/${l.country}.png`}
+              alt={l.label}
+              className="w-6 h-6 rounded-full object-cover"
+            />
           </button>
         ))}
       </div>
