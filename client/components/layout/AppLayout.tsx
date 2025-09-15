@@ -141,7 +141,7 @@ export default function AppLayout({ children }: PropsWithChildren) {
               <button
                 className="ml-2 text-xs text-slate-500 hover:text-slate-700"
                 onClick={() => setShowRates((s) => !s)}
-                aria-expanded={String(Boolean(false))}
+                aria-expanded={showRates}
               >
                 Detay
               </button>
