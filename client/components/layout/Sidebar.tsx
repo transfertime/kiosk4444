@@ -27,12 +27,10 @@ export function Sidebar({
   className,
   onNavigate,
   collapsed,
-  hovered,
 }: {
   className?: string;
   onNavigate?: () => void;
   collapsed?: boolean;
-  hovered?: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
 
