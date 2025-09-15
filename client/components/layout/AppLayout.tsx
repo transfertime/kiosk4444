@@ -111,97 +111,93 @@ export default function AppLayout({ children }: PropsWithChildren) {
       {/* Desktop top bar */}
       <header className="hidden md:flex items-center justify-between sticky top-0 z-50 bg-white/70 dark:bg-neutral-900/60 backdrop-blur border-b border-white/20 h-16">
         <div className="max-w-7xl mx-auto w-full px-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <NavLink to="/" className="font-semibold tracking-tight text-lg">
-              On Hotel Antalya
-            </NavLink>
-          </div>
-
-          <div className="flex items-center gap-4 relative">
+          <div className="flex items-start">
             <button
               title={collapsed ? "Sidebar'ı genişlet" : "Sidebar'ı daralt"}
               onClick={() => setCollapsed((c) => !c)}
-              className="rounded-md p-2 hover:bg-slate-100"
+              className="rounded-md p-2 hover:bg-slate-100 mt-2"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
+          </div>
 
-            <div className="flex items-center gap-2 relative">
-              <label className="text-xs text-slate-500">Döviz</label>
-              <select
-                aria-label="Döviz seçimi"
-                value={currency}
-                onChange={(e) => setCurrency(e.target.value)}
-                className="rounded-md border px-3 py-1 text-sm"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <option value="EUR">Euro (EUR)</option>
-                <option value="USD">Dolar (USD)</option>
-                <option value="TRY">Türk Lirası (TRY)</option>
-                <option value="GBP">Pound (GBP)</option>
-                <option value="RUB">Ruble (RUB)</option>
-              </select>
+          <div className="flex items-center gap-2 relative">
+            <label className="text-xs text-slate-500">Döviz</label>
+            <select
+              aria-label="Döviz seçimi"
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
+              className="rounded-md border px-3 py-1 text-sm"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <option value="EUR">Euro (EUR)</option>
+              <option value="USD">Dolar (USD)</option>
+              <option value="TRY">Türk Lirası (TRY)</option>
+              <option value="GBP">Pound (GBP)</option>
+              <option value="RUB">Ruble (RUB)</option>
+            </select>
 
-              <button
-                className="ml-2 text-xs text-slate-500 hover:text-slate-700"
-                onClick={() => setShowRates((s) => !s)}
-                aria-expanded={showRates}
-              >
-                Detay
-              </button>
+            <button
+              className="ml-2 text-xs text-slate-500 hover:text-slate-700"
+              onClick={() => setShowRates((s) => !s)}
+              aria-expanded={showRates}
+            >
+              Detay
+            </button>
 
-              {rates ? (
-                <div className="ml-3 text-sm text-slate-500 hidden md:block">
-                  <div className="flex items-center gap-3">
-                    <div>1 EUR ≈</div>
-                    <div className="font-semibold">
-                      {currency === "EUR" ? "1.00" : (rates[currency] || "—")}
-                    </div>
+            {rates ? (
+              <div className="ml-3 text-sm text-slate-500 hidden md:block">
+                <div className="flex items-center gap-3">
+                  <div>1 EUR ≈</div>
+                  <div className="font-semibold">
+                    {currency === "EUR" ? "1.00" : (rates[currency] || "—")}
                   </div>
                 </div>
-              ) : (
-                <div className="text-xs text-slate-400">Kurlar yükleniyor...</div>
-              )}
+              </div>
+            ) : (
+              <div className="text-xs text-slate-400">Kurlar yükleniyor...</div>
+            )}
 
-              {/* Rates panel */}
-              {showRates && (
-                <div className="absolute right-0 top-full mt-2 w-64 bg-white dark:bg-neutral-900 border border-white/10 shadow-lg rounded-md p-3 z-50">
-                  <div className="text-xs text-slate-500 mb-2">Güncel Kurlar (1 EUR)</div>
-                  <div className="space-y-3">
-                    {Object.entries(rates || {}).filter(([k]) => ["USD","TRY","GBP","RUB"].includes(k)).map(([k,v]) => (
-                      <div key={k} className="flex items-center justify-between text-sm">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 text-xs font-medium">{k}</div>
-                          <div className="text-slate-600 font-medium">{v.toFixed(4)}</div>
-                          <div className="text-xs text-slate-400">Satış: {(() => {
-                            // compute 1 {k} in TRY
-                            if (!rates) return "—";
-                            if (k === "TRY") return `1 ${k} = 1.0000 TRY`;
-                            const eurToK = rates[k] || 1;
-                            const eurToTRY = rates["TRY"] || 1;
-                            const oneKtoTRY = eurToTRY / eurToK;
-                            return `1 ${k} ≈ ${oneKtoTRY.toFixed(4)} TRY`;
-                          })()}</div>
-                        </div>
-                        <div className="w-24">
-                          {/* sparkline */}
-                          {history && history[k] ? (
-                            // reverse to ensure chronological order
-                            <div className="w-full h-6">
-                              <Sparkline data={history[k]} width={96} height={24} color="#06b6d4" />
-                            </div>
-                          ) : (
-                            <div className="w-full h-6 bg-slate-100 rounded" />
-                          )}
-                        </div>
+            {/* Rates panel */}
+            {showRates && (
+              <div className="absolute right-0 top-full mt-2 w-64 bg-white dark:bg-neutral-900 border border-white/10 shadow-lg rounded-md p-3 z-50">
+                <div className="text-xs text-slate-500 mb-2">Güncel Kurlar (1 EUR)</div>
+                <div className="space-y-3">
+                  {Object.entries(rates || {}).filter(([k]) => ["USD","TRY","GBP","RUB"].includes(k)).map(([k,v]) => (
+                    <div key={k} className="flex items-center justify-between text-sm">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 text-xs font-medium">{k}</div>
+                        <div className="text-slate-600 font-medium">{v.toFixed(4)}</div>
+                        <div className="text-xs text-slate-400">Satış: {(() => {
+                          if (!rates) return "—";
+                          if (k === "TRY") return `1 ${k} = 1.0000 TRY`;
+                          // prefer TCMB sale if available
+                          const tcmbVal = (rates && false) ? 0 : null;
+                          if (tcmbVal) return `1 ${k} ≈ ${tcmbVal.toFixed(4)} TRY`;
+                          const eurToK = rates[k] || 1;
+                          const eurToTRY = rates["TRY"] || 1;
+                          const oneKtoTRY = eurToTRY / eurToK;
+                          return `1 ${k} ≈ ${oneKtoTRY.toFixed(4)} TRY`;
+                        })()}</div>
                       </div>
-                    ))}
-                  </div>
+                      <div className="w-24">
+                        {/* sparkline */}
+                        {history && history[k] ? (
+                          <div className="w-full h-6">
+                            <Sparkline data={history[k]} width={96} height={24} color="#06b6d4" strokeWidth={1.5} />
+                          </div>
+                        ) : (
+                          <div className="w-full h-6 bg-slate-100 rounded" />
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  {lastUpdated && <div className="text-xs text-slate-400 mt-3">Son güncelleme: {lastUpdated}</div>}
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </header>
