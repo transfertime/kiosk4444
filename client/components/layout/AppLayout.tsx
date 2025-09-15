@@ -173,15 +173,14 @@ export default function AppLayout({ children }: PropsWithChildren) {
                     <div key={k} className="flex items-center justify-between text-sm">
                       <div className="flex items-center gap-3">
                         <div className="w-8 text-xs font-medium">{k}</div>
-                        <div className="text-slate-600 font-medium">{v.toFixed(4)}</div>
+                        <div className="text-slate-600 font-medium">{Number(v).toFixed(4)}</div>
                         <div className="text-xs text-slate-400">Satış: {(() => {
                           if (!rates) return "—";
                           if (k === "TRY") return `1 ${k} = 1.0000 TRY`;
-                          // prefer TCMB sale if available
-                          const tcmbVal = (rates && false) ? 0 : null;
+                          const tcmbVal = tcmb && tcmb[k] ? tcmb[k] : null;
                           if (tcmbVal) return `1 ${k} ≈ ${tcmbVal.toFixed(4)} TRY`;
-                          const eurToK = rates[k] || 1;
-                          const eurToTRY = rates["TRY"] || 1;
+                          const eurToK = Number(rates[k]) || 1;
+                          const eurToTRY = Number(rates["TRY"]) || 1;
                           const oneKtoTRY = eurToTRY / eurToK;
                           return `1 ${k} ≈ ${oneKtoTRY.toFixed(4)} TRY`;
                         })()}</div>
