@@ -310,10 +310,18 @@ export default function ReservationModal({
             <div className="flex justify-end">
               <button
                 className="rounded-md bg-brand text-white px-4 py-2 font-semibold"
-                onClick={() => setStep("payment")}
+                onClick={() => setPaymentOptionsOpen(true)}
               >
                 Güvenli Ödeme İçin Devam Et
               </button>
+              <PaymentOptionsModal
+                open={paymentOptionsOpen}
+                onOpenChange={setPaymentOptionsOpen}
+                onSelect={(m) => {
+                  setMethod(m);
+                  setStep("payment");
+                }}
+              />
             </div>
           </div>
 
