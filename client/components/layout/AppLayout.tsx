@@ -3,6 +3,7 @@ import { Sidebar } from "./Sidebar";
 import { LanguageRail } from "./LanguageRail";
 import { Menu, X } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
+import Sparkline from "@/components/ui/Sparkline";
 
 export default function AppLayout({ children }: PropsWithChildren) {
   const [open, setOpen] = useState(false);
