@@ -29,5 +29,9 @@ export function createServer() {
     require("./routes/voucher") as typeof import("./routes/voucher");
   app.post("/api/voucher-email", voucher.sendVoucherEmail);
 
+  // Exchange rates proxy + cache
+  const exchange = require("./routes/rates") as typeof import("./routes/rates");
+  app.get("/api/exchange", exchange.exchangeHandler);
+
   return app;
 }
