@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import React, { useMemo } from "react";
 import { Check, X } from "lucide-react";
 
 export type CreditCardInputProps = {
