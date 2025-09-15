@@ -34,24 +34,25 @@ export function Sidebar({
   return (
     <aside
       className={cn(
-        "h-full w-64 shrink-0 bg-white/70 dark:bg-white/5 border-r border-white/20 backdrop-blur-xl hidden md:flex flex-col",
+        "h-full shrink-0 bg-white/70 dark:bg-white/5 border-r border-white/20 backdrop-blur-xl hidden md:flex flex-col",
+        collapsed ? "w-20" : "w-64",
         className,
       )}
     >
-      <div className="px-5 pt-6 pb-4 border-b border-white/20">
-        <div className="flex items-center gap-2">
-          <div className="h-9 w-9 rounded-lg bg-brand text-white grid place-items-center font-bold">
+      <div className={cn("px-4 pt-6 pb-4 border-b border-white/20 flex flex-col items-start", collapsed ? "items-center" : "") }>
+        <div className={cn("flex items-center gap-2", collapsed ? "flex-col" : "flex-row")}>
+          <div className={cn("h-9 w-9 rounded-lg bg-brand text-white grid place-items-center font-bold", collapsed ? "" : "") }>
             on
           </div>
-          <div>
-            <p className="text-sm tracking-widest uppercase text-slate-500">
-              Antalya
-            </p>
-            <p className="font-semibold">On Hotel</p>
-          </div>
+          {!collapsed && (
+            <div>
+              <p className="text-sm tracking-widest uppercase text-slate-500">Antalya</p>
+              <p className="font-semibold">On Hotel</p>
+            </div>
+          )}
         </div>
       </div>
-      <nav className="flex-1 overflow-y-auto p-3 space-y-1">
+      <nav className="flex-1 overflow-y-auto p-2 space-y-1">
         {navItems.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
@@ -67,14 +68,16 @@ export function Sidebar({
             }
           >
             <Icon className="h-5 w-5 opacity-90" />
-            <span>{label}</span>
+            {!collapsed && <span>{label}</span>}
           </NavLink>
         ))}
       </nav>
-      <div className="p-4 text-xs text-slate-500/80">
-        <p>7/24 Destek Hattı</p>
-        <p className="font-semibold">+90 555 844 99 01</p>
-      </div>
+      {!collapsed && (
+        <div className="p-4 text-xs text-slate-500/80">
+          <p>7/24 Destek Hattı</p>
+          <p className="font-semibold">+90 555 844 99 01</p>
+        </div>
+      )}
     </aside>
   );
 }
