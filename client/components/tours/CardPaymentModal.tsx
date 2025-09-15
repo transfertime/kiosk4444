@@ -9,45 +9,73 @@ export type CardPaymentModalProps = {
   tour: Tour;
   amount: number;
   orderId: string;
+  onSuccess?: (orderId: string) => void;
 };
 
-export default function CardPaymentModal({ open, onOpenChange, tour, amount, orderId }: CardPaymentModalProps) {
+function luhnCheck(num: string) {
+  const digits = num.replace(/\D/g, "");
+  let sum = 0;
+  let toggle = false;
+  for (let i = digits.length - 1; i >= 0; i--) {
+    let d = parseInt(digits[i], 10);
+    if (toggle) {
+      d *= 2;
+      if (d > 9) d -= 9;
+    }
+    sum += d;
+    toggle = !toggle;
+  }
+  return sum % 10 === 0;
+}
+
+export default function CardPaymentModal({ open, onOpenChange, tour, amount, orderId, onSuccess }: CardPaymentModalProps) {
   const [cardName, setCardName] = React.useState("");
   const [cardNumber, setCardNumber] = React.useState("");
   const [expMonth, setExpMonth] = React.useState("");
   const [expYear, setExpYear] = React.useState("");
   const [cvv, setCvv] = React.useState("");
   const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+
+  function validate() {
+    setError(null);
+    const digits = cardNumber.replace(/\D/g, "");
+    if (!cardName.trim()) return "Kart sahibi adı giriniz.";
+    if (digits.length < 13) return "Kart numarası eksik.";
+    if (!luhnCheck(digits)) return "Geçersiz kart numarası.";
+    const m = Number(expMonth);
+    let y = Number(expYear);
+    if (!m || m < 1 || m > 12) return "Geçersiz son kullanma ayı.";
+    if (expYear.length === 2) {
+      y = 2000 + y;
+    }
+    if (!y || y < 2000) return "Geçersiz son kullanma yılı.";
+    const now = new Date();
+    const exp = new Date(y, m - 1, 1);
+    // set to end of month
+    exp.setMonth(exp.getMonth() + 1);
+    if (exp <= now) return "Kart süresi dolmuş.";
+    const cvvDigits = cvv.replace(/\D/g, "");
+    const cvvLen = digits.length === 15 ? 4 : 3;
+    if (cvvDigits.length !== cvvLen) return `CVV ${cvvLen} haneli olmalıdır.`;
+    return null;
+  }
 
   async function onPay() {
+    const v = validate();
+    if (v) {
+      setError(v);
+      return;
+    }
     try {
       setLoading(true);
-      const res = await fetch("/api/payments/vakif/init", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount, orderId: orderId, currency: "EUR" }),
-      });
-      if (!res.ok) {
-        alert("Ödeme başlatılamadı. Lütfen daha sonra tekrar deneyin.");
-        setLoading(false);
-        return;
-      }
-      const data = await res.json();
-      // Submit form to gateway
-      const form = document.createElement("form");
-      form.method = "POST";
-      form.action = data.gatewayUrl;
-      Object.entries(data.fields || {}).forEach(([k, v]) => {
-        const input = document.createElement("input");
-        input.type = "hidden";
-        input.name = k;
-        input.value = String(v);
-        form.appendChild(input);
-      });
-      document.body.appendChild(form);
-      form.submit();
+      // Simulate payment gateway flow (mock)
+      await new Promise((r) => setTimeout(r, 1200));
+      // Success
+      if (onSuccess) onSuccess(orderId);
+      onOpenChange(false);
     } catch (e) {
-      alert("Ödeme başlatılırken hata oluştu.");
+      setError("Ödeme sırasında hata oluştu.");
     } finally {
       setLoading(false);
     }
