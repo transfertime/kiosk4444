@@ -68,8 +68,7 @@ export default function AppLayout({ children }: PropsWithChildren) {
   // auto-collapse on small screens and refresh rates periodically
   useEffect(() => {
     fetchRates();
-    fetchHistory();
-    const id = setInterval(() => { fetchRates(); fetchHistory(); }, 1000 * 60 * 5); // refresh every 5 minutes
+    const id = setInterval(fetchRates, 1000 * 60 * 5); // refresh every 5 minutes
 
     function onResize() {
       try {
