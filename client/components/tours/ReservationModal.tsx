@@ -71,6 +71,7 @@ export default function ReservationModal({
 
   // Payment states
   const [method, setMethod] = useState<"card" | "pre">("card");
+  const [paymentOptionsOpen, setPaymentOptionsOpen] = useState(false);
   const [cardName, setCardName] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [expMonth, setExpMonth] = useState("");
