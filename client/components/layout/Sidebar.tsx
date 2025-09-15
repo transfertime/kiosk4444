@@ -76,7 +76,7 @@ export function Sidebar({
             }
           >
             <Icon className="h-5 w-5 opacity-90" />
-            {!collapsed && <span>{label}</span>}
+            {isExpanded && <span>{label}</span>}
           </NavLink>
         ))}
       </nav>
