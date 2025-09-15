@@ -107,6 +107,8 @@ export default function CardPaymentModal({ open, onOpenChange, tour, amount, ord
             }}
           />
 
+          {error && <div className="text-sm text-red-600 mb-2">{error}</div>}
+
           <div className="flex justify-end mt-4">
             <button
               onClick={onPay}
