@@ -6,7 +6,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Printer, Send } from "lucide-react";
+import { Printer, Send, CheckCircle2 } from "lucide-react";
 import type { Tour } from "./data";
 
 function formatEUR(n: number) {
@@ -86,10 +86,27 @@ export default function VoucherModal(props: VoucherModalProps) {
     <Dialog open={props.open} onOpenChange={props.onOpenChange}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Voucher</DialogTitle>
-          <DialogDescription>
-            Rezervasyon kodu: {props.reservationCode}
-          </DialogDescription>
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-3">
+              <div className="rounded-full bg-green-100 text-green-600 p-2">
+                <CheckCircle2 className="h-6 w-6" />
+              </div>
+              <div>
+                <DialogTitle className="!mb-0">
+                  Rezervasyon Onaylandı
+                </DialogTitle>
+                <div className="text-sm text-slate-600">
+                  Rezervasyon özeti ve işlemler
+                </div>
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-xs text-slate-500">Rezervasyon Kodu</div>
+              <div className="font-mono font-semibold text-lg">
+                {props.reservationCode}
+              </div>
+            </div>
+          </div>
         </DialogHeader>
 
         <div className="flex justify-end gap-2 mb-2">
