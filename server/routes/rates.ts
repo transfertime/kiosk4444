@@ -66,9 +66,19 @@ export const exchangeHandler = async (req, res) => {
     }
 
     const tcmbSelling = {};
-    if (tcmb && tcmb.map) {
-      for (const k of ["USD", "EUR", "GBP", "RUB"]) {
-        tcmbSelling[k] = tcmb.map[k] ?? null;
+    for (const k of ["USD", "EUR", "GBP", "RUB"]) {
+      if (tcmb && tcmb.map && tcmb.map[k]) {
+        tcmbSelling[k] = tcmb.map[k];
+      } else if (latest && latest.rates) {
+        const eurToK = Number(latest.rates[k]) || null;
+        const eurToTRY = Number(latest.rates['TRY']) || null;
+        if (eurToK && eurToTRY) {
+          tcmbSelling[k] = eurToTRY / eurToK;
+        } else {
+          tcmbSelling[k] = null;
+        }
+      } else {
+        tcmbSelling[k] = null;
       }
     }
 
