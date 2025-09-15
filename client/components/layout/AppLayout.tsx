@@ -197,7 +197,20 @@ export default function AppLayout({ children }: PropsWithChildren) {
                       </div>
                     </div>
                   ))}
-                  {lastUpdated && <div className="text-xs text-slate-400 mt-3">Son güncelleme: {lastUpdated}</div>}
+                  {lastUpdated && <div className="text-xs text-slate-400 mt-3">API Son güncelleme: {new Date(lastUpdated).toLocaleString()}</div>}
+                  {tcmbDate && (
+                    <div className="text-xs text-slate-400 mt-1">TCMB Tarih: {(() => {
+                      // Try parse dd.MM.yyyy
+                      const d = tcmbDate;
+                      if (/^\d{2}\.\d{2}\.\d{4}$/.test(d)) {
+                        const [dd,mm,yyyy] = d.split('.');
+                        return new Date(Number(yyyy), Number(mm)-1, Number(dd)).toLocaleDateString();
+                      }
+                      const parsed = new Date(d);
+                      if (!isNaN(parsed.getTime())) return parsed.toLocaleString();
+                      return d;
+                    })()}</div>
+                  )}
                 </div>
               </div>
             )}
