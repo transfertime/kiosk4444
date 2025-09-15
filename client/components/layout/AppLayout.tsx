@@ -1,9 +1,8 @@
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { Sidebar } from "./Sidebar";
 import { LanguageRail } from "./LanguageRail";
 import { Menu, X } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 export default function AppLayout({ children }: PropsWithChildren) {
   const [open, setOpen] = useState(false);
