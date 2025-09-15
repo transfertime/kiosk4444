@@ -110,7 +110,7 @@ export default function AppLayout({ children }: PropsWithChildren) {
             </NavLink>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 relative">
             <button
               title={collapsed ? "Sidebar'ı genişlet" : "Sidebar'ı daralt"}
               onClick={() => setCollapsed((c) => !c)}
@@ -121,13 +121,14 @@ export default function AppLayout({ children }: PropsWithChildren) {
               </svg>
             </button>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 relative">
               <label className="text-xs text-slate-500">Döviz</label>
               <select
                 aria-label="Döviz seçimi"
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
                 className="rounded-md border px-3 py-1 text-sm"
+                onClick={(e) => e.stopPropagation()}
               >
                 <option value="EUR">Euro (EUR)</option>
                 <option value="USD">Dolar (USD)</option>
@@ -135,18 +136,46 @@ export default function AppLayout({ children }: PropsWithChildren) {
                 <option value="GBP">Pound (GBP)</option>
                 <option value="RUB">Ruble (RUB)</option>
               </select>
-            </div>
 
-            <div className="text-sm text-slate-500">
+              <button
+                className="ml-2 text-xs text-slate-500 hover:text-slate-700"
+                onClick={() => setShowRates((s) => !s)}
+                aria-expanded={String(Boolean(false))}
+              >
+                Detay
+              </button>
+
               {rates ? (
-                <div className="flex items-center gap-3">
-                  <div>1 EUR ≈</div>
-                  <div className="font-semibold">
-                    {currency === "EUR" ? "1.00" : (rates[currency] || "—")}
+                <div className="ml-3 text-sm text-slate-500 hidden md:block">
+                  <div className="flex items-center gap-3">
+                    <div>1 EUR ≈</div>
+                    <div className="font-semibold">
+                      {currency === "EUR" ? "1.00" : (rates[currency] || "—")}
+                    </div>
                   </div>
                 </div>
               ) : (
                 <div className="text-xs text-slate-400">Kurlar yükleniyor...</div>
+              )}
+
+              {/* Rates panel */}
+              {showRates && (
+                <div className="absolute right-0 top-full mt-2 w-64 bg-white dark:bg-neutral-900 border border-white/10 shadow-lg rounded-md p-3 z-50">
+                  <div className="text-xs text-slate-500 mb-2">Güncel Kurlar (1 EUR)</div>
+                  <div className="space-y-2">
+                    {Object.entries(rates || {}).filter(([k]) => ["USD","TRY","GBP","RUB"].includes(k)).map(([k,v]) => (
+                      <div key={k} className="flex items-center justify-between text-sm">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 text-xs font-medium">{k}</div>
+                          <div className="text-slate-600">{v.toFixed(4)}</div>
+                        </div>
+                        <div className="w-20 h-3 bg-slate-100 rounded overflow-hidden">
+                          <div style={{width: `${Math.min(100, (v / (rates["TRY"]||1)) * 20)}%`}} className="h-full bg-brand" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
           </div>
