@@ -213,7 +213,7 @@ export default function AppLayout({ children }: PropsWithChildren) {
 
       {/* Desktop layout */}
       <div className="flex md:pt-0">
-        <Sidebar className={`md:sticky md:top-0 md:h-screen ${collapsed ? "collapsed" : ""}`} onNavigate={() => { setOpen(false); }} collapsed={collapsed} />
+        <Sidebar className={`md:sticky md:top-0 md:h-screen ${collapsed ? "collapsed" : ""}`} onNavigate={() => { setOpen(false); }} collapsed={collapsed} hovered={false} />
         <main className={`flex-1 min-w-0 ${collapsed ? "md:pl-6" : ""}`}>{children}</main>
       </div>
 
