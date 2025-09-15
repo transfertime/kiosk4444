@@ -41,6 +41,44 @@ function luhnCheck(num: string) {
   return digits.length > 0 && sum % 10 === 0;
 }
 
+function BrandLogo({ brand }: { brand: string }) {
+  const common = "w-10 h-6";
+  switch (brand) {
+    case "visa":
+      return (
+        <svg className={common} viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+          <rect width="36" height="24" rx="4" fill="#1a1f71" />
+          <path d="M8 16l2-8h2l-2 8H8z" fill="#fff" opacity="0.9" />
+          <path d="M14 8h2l1 8h-2l-1-8z" fill="#fff" opacity="0.9" />
+        </svg>
+      );
+    case "mastercard":
+      return (
+        <svg className={common} viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+          <rect width="36" height="24" rx="4" fill="#fff" />
+          <circle cx="14" cy="12" r="6" fill="#eb001b" />
+          <circle cx="22" cy="12" r="6" fill="#f79f1b" />
+        </svg>
+      );
+    case "amex":
+      return (
+        <svg className={common} viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+          <rect width="36" height="24" rx="4" fill="#2e77bb" />
+          <text x="6" y="16" fill="#fff" fontSize="9" fontWeight="700">AMEX</text>
+        </svg>
+      );
+    case "discover":
+      return (
+        <svg className={common} viewBox="0 0 36 24" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+          <rect width="36" height="24" rx="4" fill="#fff" />
+          <text x="6" y="15" fill="#ff6f00" fontSize="8" fontWeight="700">discover</text>
+        </svg>
+      );
+    default:
+      return <div className="w-10 h-6" />;
+  }
+}
+
 export default function CreditCardInput({
   cardName,
   cardNumber,
