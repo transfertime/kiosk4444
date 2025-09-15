@@ -24,6 +24,8 @@ import {
   User,
 } from "lucide-react";
 import VoucherModal from "./VoucherModal";
+import PaymentOptionsModal from "./PaymentOptionsModal";
+import CreditCardInput from "./CreditCardInput";
 import type { Tour } from "./data";
 
 function formatEUR(n: number) {
