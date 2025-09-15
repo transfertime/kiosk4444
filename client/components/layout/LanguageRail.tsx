@@ -1,12 +1,14 @@
 import { useState } from "react";
 
+import React, { useState } from "react";
+
 const langs = [
-  { code: "tr", label: "Türkçe", flag: "🇹🇷" },
-  { code: "en", label: "English", flag: "🇬🇧" },
-  { code: "de", label: "Deutsch", flag: "🇩🇪" },
-  { code: "ru", label: "Русский", flag: "🇷🇺" },
-  { code: "nl", label: "Nederlands", flag: "🇳🇱" },
-  { code: "ir", label: "فارسی", flag: "🇮🇷" },
+  { code: "tr", label: "Türkçe", country: "tr" },
+  { code: "en", label: "English", country: "gb" },
+  { code: "de", label: "Deutsch", country: "de" },
+  { code: "ru", label: "Русский", country: "ru" },
+  { code: "nl", label: "Nederlands", country: "nl" },
+  { code: "ir", label: "فارسی", country: "ir" },
 ];
 
 export function LanguageRail() {
@@ -23,15 +25,13 @@ export function LanguageRail() {
             key={l.code}
             aria-label={l.label}
             onClick={() => setActive(l.code)}
-            className={`h-9 w-9 grid place-items-center rounded-full text-base transition ${
+            className={`h-9 w-9 grid place-items-center rounded-full text-base overflow-hidden transition ${
               active === l.code
                 ? "bg-brand text-white shadow"
                 : "bg-white/70 dark:bg-white/10"
             }`}
           >
-            <span role="img" aria-hidden>
-              {l.flag}
-            </span>
+            <img src={`https://flagcdn.com/w40/${l.country}.png`} alt={l.label} className="w-6 h-6 rounded-full object-cover" />
           </button>
         ))}
       </div>
