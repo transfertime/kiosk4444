@@ -1,5 +1,7 @@
 import React from "react";
+import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Check } from "lucide-react";
 import CreditCardInput from "./CreditCardInput";
 import type { Tour } from "./data";
 
