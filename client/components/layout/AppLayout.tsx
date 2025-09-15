@@ -46,6 +46,7 @@ export default function AppLayout({ children }: PropsWithChildren) {
 
   // Fetch exchange rates (switch to ER API)
   const [rates, setRates] = useState<Record<string, number> | null>(null);
+  const [showRates, setShowRates] = useState(false);
   const fetchRates = async () => {
     try {
       const res = await fetch("https://open.er-api.com/v6/latest/EUR");
