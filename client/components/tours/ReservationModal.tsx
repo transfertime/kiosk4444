@@ -26,6 +26,8 @@ import {
 import VoucherModal from "./VoucherModal";
 import PaymentOptionsModal from "./PaymentOptionsModal";
 import CreditCardInput from "./CreditCardInput";
+import CardPaymentModal from "./CardPaymentModal";
+import PreReservationModal from "./PreReservationModal";
 import type { Tour } from "./data";
 
 function formatEUR(n: number) {
