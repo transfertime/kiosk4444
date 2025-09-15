@@ -97,20 +97,45 @@ export default function AppLayout({ children }: PropsWithChildren) {
             </NavLink>
           </div>
 
-          <div className="flex items-center gap-3">
-            <label className="text-xs text-slate-500">Döviz</label>
-            <select
-              aria-label="Döviz seçimi"
-              value={currency}
-              onChange={(e) => setCurrency(e.target.value)}
-              className="rounded-md border px-3 py-1 text-sm"
+          <div className="flex items-center gap-4">
+            <button
+              title={collapsed ? "Sidebar'ı genişlet" : "Sidebar'ı daralt"}
+              onClick={() => setCollapsed((c) => !c)}
+              className="rounded-md p-2 hover:bg-slate-100"
             >
-              <option value="EUR">Euro (EUR)</option>
-              <option value="USD">Dolar (USD)</option>
-              <option value="TRY">Türk Lirası (TRY)</option>
-              <option value="GBP">Pound (GBP)</option>
-              <option value="RUB">Ruble (RUB)</option>
-            </select>
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+
+            <div className="flex items-center gap-2">
+              <label className="text-xs text-slate-500">Döviz</label>
+              <select
+                aria-label="Döviz seçimi"
+                value={currency}
+                onChange={(e) => setCurrency(e.target.value)}
+                className="rounded-md border px-3 py-1 text-sm"
+              >
+                <option value="EUR">Euro (EUR)</option>
+                <option value="USD">Dolar (USD)</option>
+                <option value="TRY">Türk Lirası (TRY)</option>
+                <option value="GBP">Pound (GBP)</option>
+                <option value="RUB">Ruble (RUB)</option>
+              </select>
+            </div>
+
+            <div className="text-sm text-slate-500">
+              {rates ? (
+                <div className="flex items-center gap-3">
+                  <div>1 EUR ≈</div>
+                  <div className="font-semibold">
+                    {currency === "EUR" ? "1.00" : (rates[currency] || "—")}
+                  </div>
+                </div>
+              ) : (
+                <div className="text-xs text-slate-400">Kurlar yükleniyor...</div>
+              )}
+            </div>
           </div>
         </div>
       </header>
