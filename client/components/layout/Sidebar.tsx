@@ -33,11 +33,17 @@ export function Sidebar({
   collapsed?: boolean;
   hovered?: boolean;
 }) {
+  const [hovered, setHovered] = useState(false);
+
+  const isExpanded = !collapsed || hovered;
+
   return (
     <aside
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       className={cn(
-        "h-full shrink-0 bg-white/70 dark:bg-white/5 border-r border-white/20 backdrop-blur-xl hidden md:flex flex-col",
-        collapsed ? "w-20" : "w-64",
+        "h-full shrink-0 bg-white/70 dark:bg-white/5 border-r border-white/20 backdrop-blur-xl hidden md:flex flex-col transition-all duration-200",
+        isExpanded ? "w-64" : "w-20",
         className,
       )}
     >
