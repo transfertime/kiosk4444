@@ -435,7 +435,9 @@ export default function ReservationModal({
                 disabled={method === "pre" ? !(pre1 && pre2 && pre3) : false}
                 onClick={async () => {
                   if (method === "pre") {
-                    setReservationCode(genCode());
+                    const code = genCode();
+                    setReservationCode(code);
+                    setVoucherOpen(true);
                     setStep("success");
                     return;
                   }
