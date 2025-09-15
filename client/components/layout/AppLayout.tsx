@@ -44,16 +44,46 @@ export default function AppLayout({ children }: PropsWithChildren) {
     } catch {}
   }, [currency]);
 
-  // Fetch exchange rates (switch to ER API)
+  // Fetch exchange rates (use exchangerate.host for latest + timeseries)
   const [rates, setRates] = useState<Record<string, number> | null>(null);
   const [showRates, setShowRates] = useState(false);
+  const [history, setHistory] = useState<Record<string, number[]> | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+
   const fetchRates = async () => {
     try {
-      const res = await fetch("https://open.er-api.com/v6/latest/EUR");
+      const symbols = ["USD","TRY","GBP","RUB"].join(",");
+      const base = "EUR";
+      const res = await fetch(`https://api.exchangerate.host/latest?base=${base}&symbols=${symbols}`);
       if (!res.ok) return;
       const data = await res.json();
-      // data.rates is an object of currency: value
       setRates(data.rates || null);
+      if (data && data.date) setLastUpdated(data.date);
+    } catch (e) {
+      // ignore
+    }
+  };
+
+  const fetchHistory = async () => {
+    try {
+      const end = new Date();
+      const start = new Date();
+      start.setDate(end.getDate() - 7);
+      const s = start.toISOString().slice(0,10);
+      const e = end.toISOString().slice(0,10);
+      const symbols = ["USD","TRY","GBP","RUB"].join(",");
+      const res = await fetch(`https://api.exchangerate.host/timeseries?start_date=${s}&end_date=${e}&base=EUR&symbols=${symbols}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      const obj: Record<string, number[]> = {};
+      Object.keys(data.rates || {}).forEach((date:string) => {
+        const day = data.rates[date];
+        Object.entries(day).forEach(([k,v]) => {
+          if (!obj[k]) obj[k] = [];
+          obj[k].push(Number(v));
+        });
+      });
+      setHistory(obj);
     } catch (e) {
       // ignore
     }
@@ -62,7 +92,8 @@ export default function AppLayout({ children }: PropsWithChildren) {
   // auto-collapse on small screens and refresh rates periodically
   useEffect(() => {
     fetchRates();
-    const id = setInterval(fetchRates, 1000 * 60 * 5); // refresh every 5 minutes
+    fetchHistory();
+    const id = setInterval(() => { fetchRates(); fetchHistory(); }, 1000 * 60 * 5); // refresh every 5 minutes
 
     function onResize() {
       try {
