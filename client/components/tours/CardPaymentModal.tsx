@@ -31,14 +31,14 @@ function luhnCheck(num: string) {
 }
 
 export default function CardPaymentModal({ open, onOpenChange, tour, amount, orderId, onSuccess }: CardPaymentModalProps) {
-  const [cardName, setCardName] = React.useState("");
-  const [cardNumber, setCardNumber] = React.useState("");
-  const [expMonth, setExpMonth] = React.useState("");
-  const [expYear, setExpYear] = React.useState("");
-  const [cvv, setCvv] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
+  const [cardName, setCardName] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
+  const [expMonth, setExpMonth] = useState("");
+  const [expYear, setExpYear] = useState("");
+  const [cvv, setCvv] = useState("");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = React.useState<string | null>(null);
-  const [success, setSuccess] = React.useState(false);
+  const [success, setSuccess] = useState(false);
 
   function validate() {
     setError(null);
