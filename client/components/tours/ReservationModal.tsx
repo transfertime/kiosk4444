@@ -171,7 +171,7 @@ export default function ReservationModal({
                 <Checkbox /> Otel Transfer
               </label>
               <label className="flex items-center gap-2">
-                <Checkbox /> Dalış Ekipmanı
+                <Checkbox /> Dal��ş Ekipmanı
               </label>
             </div>
           </div>
@@ -601,7 +601,7 @@ export default function ReservationModal({
           <aside className="rounded-lg border p-4 bg-card/50">
             <h3 className="font-semibold mb-3">Ödeme Yöntemi</h3>
             <p className="text-sm">
-              {method === "card" ? "Kredi Kartı" : "Ön Rezervasyon"}
+              {method === "card" ? "Kredi Kart��" : "Ön Rezervasyon"}
             </p>
             <p className="text-xs text-slate-500 mt-2 flex items-center gap-2">
               <ShieldCheck className="h-4 w-4" />
@@ -631,6 +631,12 @@ export default function ReservationModal({
         tour={tour}
         amount={totalPrice}
         orderId={reservationCode || genCode()}
+        onSuccess={(oid) => {
+          setReservationCode(oid);
+          setVoucherOpen(true);
+          setStep("success");
+          setCardModalOpen(false);
+        }}
       />
 
       <PreReservationModal
