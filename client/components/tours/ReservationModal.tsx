@@ -377,71 +377,20 @@ export default function ReservationModal({
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="card" className="mt-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <div className="md:col-span-2">
-                    <label className="block text-xs text-slate-600 mb-1">
-                      Kart Üzerindeki İsim
-                    </label>
-                    <input
-                      className="w-full rounded-md border px-3 py-2 text-sm"
-                      value={cardName}
-                      onChange={(e) => setCardName(e.target.value)}
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <label className="block text-xs text-slate-600 mb-1">
-                      Kart Numarası
-                    </label>
-                    <input
-                      inputMode="numeric"
-                      maxLength={19}
-                      placeholder="1111 2222 3333 4444"
-                      className="w-full rounded-md border px-3 py-2 text-sm"
-                      value={cardNumber}
-                      onChange={(e) =>
-                        setCardNumber(e.target.value.replace(/[^0-9 ]/g, ""))
-                      }
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-slate-600 mb-1">
-                      Son Kullanma Ay
-                    </label>
-                    <input
-                      inputMode="numeric"
-                      placeholder="MM"
-                      className="w-full rounded-md border px-3 py-2 text-sm"
-                      value={expMonth}
-                      onChange={(e) => setExpMonth(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-slate-600 mb-1">
-                      Yıl
-                    </label>
-                    <input
-                      inputMode="numeric"
-                      placeholder="YYYY"
-                      className="w-full rounded-md border px-3 py-2 text-sm"
-                      value={expYear}
-                      onChange={(e) => setExpYear(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-slate-600 mb-1">
-                      CVV
-                    </label>
-                    <input
-                      inputMode="numeric"
-                      maxLength={4}
-                      className="w-full rounded-md border px-3 py-2 text-sm"
-                      value={cvv}
-                      onChange={(e) =>
-                        setCvv(e.target.value.replace(/[^0-9]/g, ""))
-                      }
-                    />
-                  </div>
-                </div>
+                <CreditCardInput
+                  cardName={cardName}
+                  cardNumber={cardNumber}
+                  expMonth={expMonth}
+                  expYear={expYear}
+                  cvv={cvv}
+                  onChange={(fields) => {
+                    if (fields.cardName !== undefined) setCardName(fields.cardName);
+                    if (fields.cardNumber !== undefined) setCardNumber(fields.cardNumber);
+                    if (fields.expMonth !== undefined) setExpMonth(fields.expMonth);
+                    if (fields.expYear !== undefined) setExpYear(fields.expYear);
+                    if (fields.cvv !== undefined) setCvv(fields.cvv);
+                  }}
+                />
               </TabsContent>
 
               <TabsContent value="pre" className="mt-4">
