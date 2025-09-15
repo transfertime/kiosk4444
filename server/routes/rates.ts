@@ -1,6 +1,6 @@
-import { RequestHandler } from "express";
+import type { RequestHandler } from "express";
 
-import { RequestHandler } from "express";
+import type { RequestHandler } from "express";
 
 const CACHE_TTL = 1000 * 60 * 5; // 5 minutes
 let cache: { ts: number; data: any } | null = null;
