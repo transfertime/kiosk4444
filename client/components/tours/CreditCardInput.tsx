@@ -149,7 +149,7 @@ export default function CreditCardInput({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div className="md:col-span-2">
-          <label className="block text-xs text-slate-600 mb-1">Kart Üzerindeki ��sim</label>
+          <label className="block text-xs text-slate-600 mb-1">Kart Üzerindeki İsim</label>
           <input
             className={`w-full rounded-md px-3 py-2 text-sm border transition-colors duration-200 ease-in-out ${fieldClass(nameValid)}`}
             value={cardName}
@@ -166,7 +166,7 @@ export default function CreditCardInput({
             inputMode="numeric"
             maxLength={23}
             placeholder="1111 2222 3333 4444"
-            className={`w-full rounded-md px-3 py-2 text-sm border ${fieldClass(numberDigits.length === 0 ? undefined : numberValid)}`}
+            className={`w-full rounded-md px-3 py-2 text-sm border transition-colors duration-200 ease-in-out ${fieldClass(numberDigits.length === 0 ? undefined : numberValid)}`}
             value={cardNumber}
             onChange={(e) => onChange({ cardNumber: e.target.value.replace(/[^0-9 ]/g, "") })}
           />
