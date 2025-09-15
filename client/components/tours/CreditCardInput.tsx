@@ -132,10 +132,11 @@ export default function CreditCardInput({
         <div className="text-lg tracking-widest font-mono flex items-center justify-between">
           <div>{formatCardNumber(cardNumber) || "•••• •••• •••• ••••"}</div>
           <div className="flex items-center gap-2">
+            <BrandLogo brand={brand} />
             <div className="text-xs uppercase tracking-wider opacity-90">{brand === "unknown" ? "" : brand}</div>
             {allValid ? (
-              <div className="flex items-center gap-1 bg-white/10 rounded-full p-1">
-                <Check className="h-5 w-5 text-green-300" />
+              <div className="flex items-center gap-1 bg-white/10 rounded-full p-1 transition-transform transform scale-100">
+                <Check className="h-5 w-5 text-green-300 animate-pulse" />
               </div>
             ) : (
               <div className="flex items-center gap-1 bg-white/5 rounded-full p-1">
