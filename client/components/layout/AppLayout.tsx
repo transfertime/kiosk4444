@@ -8,8 +8,26 @@ export default function AppLayout({ children }: PropsWithChildren) {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
 
-  // Show sidebar only on homepage (hide on detail/inner pages)
-  const showSidebar = pathname === "/";
+  // Sidebar collapsed (mini) state. Default: collapse on inner pages
+  const [collapsed, setCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem("sidebar-collapsed") === "true";
+    } catch {
+      return pathname !== "/"; // collapse by default on inner pages
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("sidebar-collapsed", String(collapsed));
+    } catch {}
+  }, [collapsed]);
+
+  // When navigating to inner pages, collapse sidebar automatically
+  useEffect(() => {
+    if (pathname !== "/") setCollapsed(true);
+    else setCollapsed(false);
+  }, [pathname]);
 
   // Currency select state
   const [currency, setCurrency] = useState(() => {
@@ -25,6 +43,27 @@ export default function AppLayout({ children }: PropsWithChildren) {
       localStorage.setItem("currency", currency);
     } catch {}
   }, [currency]);
+
+  // Fetch exchange rates
+  const [rates, setRates] = useState<Record<string, number> | null>(null);
+  const fetchRates = async () => {
+    try {
+      const symbols = ["USD", "TRY", "GBP", "RUB"].join(",");
+      const base = "EUR";
+      const res = await fetch(`https://api.exchangerate.host/latest?base=${base}&symbols=${symbols}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      setRates(data.rates || null);
+    } catch (e) {
+      // ignore
+    }
+  };
+
+  useEffect(() => {
+    fetchRates();
+    const id = setInterval(fetchRates, 1000 * 60 * 5); // refresh every 5 minutes
+    return () => clearInterval(id);
+  }, []);
 
   return (
     <div className="min-h-screen relative">
